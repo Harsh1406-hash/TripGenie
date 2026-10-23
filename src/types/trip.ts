@@ -39,10 +39,12 @@ export interface VenueStop {
   cost: number | string;
   operatingHours?: string;
   alert?: string;
-  mapCoords: { x: number; y: number }; // Relative coordinate on vector map (0-100)
+  mapCoords: { x: number; y: number };
   description: string;
   visited?: boolean;
   transitDetail?: string;
+  approved?: boolean;
+  isMustVisit?: boolean;
 }
 
 export interface DayPlan {
@@ -93,6 +95,7 @@ export interface TripParams {
   stepFreeFilter: boolean;
   curfewEnabled: boolean;
   curfewTime: string;
+  mustVisitPlaces: string[];
 }
 
 export interface UserSession {

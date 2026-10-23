@@ -13,10 +13,9 @@ import { ExternalMapModal } from './components/common/ExternalMapModal';
 import { OfflinePackageModal } from './components/common/OfflinePackageModal';
 import { AuthModal } from './components/common/AuthModal';
 import { ShareModal } from './components/common/ShareModal';
-import { Compass, Sparkles, Navigation, Layers, Shield } from 'lucide-react';
 
 const ScreenRenderer: React.FC = () => {
-  const { currentScreen, setCurrentScreen } = useTrip();
+  const { currentScreen } = useTrip();
 
   return (
     <main className="flex-1">
@@ -29,73 +28,17 @@ const ScreenRenderer: React.FC = () => {
   );
 };
 
-const QuickDemoBar: React.FC = () => {
-  const { currentScreen, setCurrentScreen } = useTrip();
-
-  return (
-    <div className="fixed bottom-4 left-4 z-30 hidden xl:flex items-center gap-1.5 p-1.5 rounded-2xl bg-slate-900/90 backdrop-blur-xl border border-slate-800 shadow-2xl text-[11px] no-print">
-      <div className="flex items-center gap-1 px-2.5 py-1 text-slate-400 font-medium">
-        <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-        <span>Demo Flows:</span>
-      </div>
-      <button
-        onClick={() => setCurrentScreen('landing')}
-        className={`px-2.5 py-1 rounded-xl transition-all ${
-          currentScreen === 'landing'
-            ? 'bg-cyan-500 text-slate-950 font-bold'
-            : 'text-slate-300 hover:bg-slate-800'
-        }`}
-      >
-        1. Landing & Auth
-      </button>
-      <button
-        onClick={() => setCurrentScreen('intake')}
-        className={`px-2.5 py-1 rounded-xl transition-all ${
-          currentScreen === 'intake'
-            ? 'bg-cyan-500 text-slate-950 font-bold'
-            : 'text-slate-300 hover:bg-slate-800'
-        }`}
-      >
-        2. Intake Wizard
-      </button>
-      <button
-        onClick={() => setCurrentScreen('studio')}
-        className={`px-2.5 py-1 rounded-xl transition-all ${
-          currentScreen === 'studio'
-            ? 'bg-cyan-500 text-slate-950 font-bold'
-            : 'text-slate-300 hover:bg-slate-800'
-        }`}
-      >
-        3. Studio Canvas
-      </button>
-      <button
-        onClick={() => setCurrentScreen('live')}
-        className={`px-2.5 py-1 rounded-xl transition-all ${
-          currentScreen === 'live'
-            ? 'bg-cyan-500 text-slate-950 font-bold'
-            : 'text-slate-300 hover:bg-slate-800'
-        }`}
-      >
-        4. Live Nav
-      </button>
-      <button
-        onClick={() => setCurrentScreen('dossier')}
-        className={`px-2.5 py-1 rounded-xl transition-all ${
-          currentScreen === 'dossier'
-            ? 'bg-cyan-500 text-slate-950 font-bold'
-            : 'text-slate-300 hover:bg-slate-800'
-        }`}
-      >
-        5. Master Dossier
-      </button>
-    </div>
-  );
-};
-
 export function App() {
   return (
     <TripProvider>
-      <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 bg-grid-pattern glow-ambient-cyan">
+      <div className="min-h-screen flex flex-col bg-[#07050C] text-slate-100 relative selection:bg-rose-500/30">
+        {/* iOS Ambient Frosted Wallpaper Orbs */}
+        <div className="ios-wallpaper-ambient">
+          <div className="ios-orb-1"></div>
+          <div className="ios-orb-2"></div>
+          <div className="ios-orb-3"></div>
+        </div>
+
         <Navbar />
         <ScreenRenderer />
         <Footer />
@@ -107,9 +50,6 @@ export function App() {
         <AuthModal />
         <ShareModal />
         <Toast />
-
-        {/* Quick Demo Switcher */}
-        <QuickDemoBar />
       </div>
     </TripProvider>
   );

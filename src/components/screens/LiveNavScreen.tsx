@@ -5,22 +5,16 @@ import {
   Navigation,
   HardDriveDownload,
   BellRing,
-  MapPin,
-  Clock,
-  Compass,
   CheckCircle2,
   AlertTriangle,
   RotateCcw,
-  Volume2,
   Pause,
   Play,
-  ShieldCheck,
-  Footprints,
-  Radio,
-  ExternalLink,
-  ChevronRight,
-  BatteryCharging,
   Gauge,
+  BatteryCharging,
+  Eye,
+  EyeOff,
+  Map,
 } from 'lucide-react';
 
 export const LiveNavScreen: React.FC = () => {
@@ -36,9 +30,9 @@ export const LiveNavScreen: React.FC = () => {
     showToast,
   } = useTrip();
 
-  // Simulated countdown for alarm: 14 mins 48 secs
   const [countdownSeconds, setCountdownSeconds] = useState(888);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [showLiveMap, setShowLiveMap] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -56,221 +50,208 @@ export const LiveNavScreen: React.FC = () => {
   const day1Plan = dayPlans[0];
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 animate-fade-in">
-      {/* Live Nav Top Telemetry Bar */}
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 animate-fade-in">
+      {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-slate-800">
         <div>
           <div className="flex items-center gap-2 text-xs text-emerald-400 font-semibold tracking-wide uppercase">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-            <span>Live GPS Field Telemetry Active</span>
-            <span>•</span>
-            <span>Zero-Data Mode</span>
+            <span>Live Travel Guide Active</span>
           </div>
           <h1 className="font-display font-black text-2xl sm:text-3xl text-slate-100 mt-0.5">
-            Real-Time Navigation & Adaptive Rescheduler
+            On The Go Guide & Smart Alerts
           </h1>
+          <p className="text-xs text-slate-400 mt-1">
+            Real-time directions, sunset curfews, and automatic missed-stop rescheduling.
+          </p>
         </div>
 
-        {/* Live Device Hardware Telemetry Chips */}
+        {/* Status Indicators */}
         <div className="flex items-center gap-2 text-xs">
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300">
-            <Gauge className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Pace: 3.2 km/h (Gentle)</span>
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full ios-subcard text-slate-300">
+            <Gauge className="w-3.5 h-3.5 text-rose-400" />
+            <span>Pace: Gentle (3.2 km/h)</span>
           </div>
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-emerald-400">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full ios-subcard text-emerald-400">
             <BatteryCharging className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Battery: 92% (Low Drain)</span>
+            <span>Offline Ready</span>
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* LEFT COLUMN: ACTIVE VENUE, PROACTIVE ALARM & RESCHEDULER (7 COLS) */}
-        <div className="lg:col-span-7 space-y-5">
-          {/* Active Venue Card: Current En Route Stop */}
-          <div className="glass-panel-elevated p-6 rounded-2xl border-cyan-500/50 shadow-glow-cyan space-y-4 relative overflow-hidden">
+        {/* Main Column (8 Cols) */}
+        <div className="lg:col-span-8 space-y-5">
+          {/* Active Stop Card */}
+          <div className="ios-card-elevated p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 uppercase tracking-wider flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
-                Current En Route Stop
+              <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-rose-500/15 text-rose-300 border border-rose-500/30 uppercase tracking-wider flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-rose-400 animate-ping"></span>
+                Next En Route Stop
               </span>
-              <span className="text-xs font-mono text-slate-400">Day 1 • Stop 5 of 6</span>
+              <span className="text-xs font-mono text-slate-400">Stop 5 of 6</span>
             </div>
 
             <div>
               <h2 className="font-display font-black text-2xl text-slate-100">
                 Hawa Mahal (Palace of Winds)
               </h2>
-              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
-                953 intricately carved jharokhas with natural air-conditioning effect. Designated accessible photo terrace assigned on ground pavilion.
+              <p className="text-xs text-slate-300 mt-1">
+                Famous 953-window palace facade. Flat accessible viewpoint on ground floor.
               </p>
             </div>
 
-            {/* Quick Metrics Bar */}
-            <div className="grid grid-cols-3 gap-3 p-3 rounded-xl bg-slate-950/70 border border-slate-800 text-center">
+            {/* Quick Metrics */}
+            <div className="grid grid-cols-3 gap-3 p-3 rounded-2xl ios-subcard text-center">
               <div>
-                <span className="text-[10px] text-slate-400 block uppercase">Transit Distance</span>
-                <span className="font-bold text-sm text-cyan-400 font-mono">2.4 km</span>
+                <span className="text-[10px] text-slate-400 block uppercase">Distance</span>
+                <span className="font-bold text-sm text-rose-400 font-mono">2.4 km</span>
               </div>
-              <div className="border-x border-slate-800">
-                <span className="text-[10px] text-slate-400 block uppercase">Estimated ETA</span>
+              <div className="border-x border-white/[0.08]">
+                <span className="text-[10px] text-slate-400 block uppercase">Drive Time</span>
                 <span className="font-bold text-sm text-slate-100 font-mono">12 Mins</span>
               </div>
               <div>
-                <span className="text-[10px] text-slate-400 block uppercase">Road Congestion</span>
-                <span className="font-bold text-sm text-emerald-400">Light Green</span>
+                <span className="text-[10px] text-slate-400 block uppercase">Traffic</span>
+                <span className="font-bold text-sm text-emerald-400">Light</span>
               </div>
             </div>
 
-            {/* Simulated Audio Tour Player for Hawa Mahal */}
-            <div className="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 flex items-center justify-between gap-3">
+            {/* Quick Audio Tour Mini Player */}
+            <div className="p-3.5 rounded-2xl ios-subcard flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => {
                     setIsPlayingAudio(!isPlayingAudio);
                     showToast(
-                      isPlayingAudio
-                        ? 'Audio guide paused'
-                        : 'Playing cached audio: "Jaipur Royal Courtyards Commentary"',
+                      isPlayingAudio ? 'Audio paused' : 'Playing: 3-Min Jaipur Royal Story',
                       'info'
                     );
                   }}
-                  className="w-9 h-9 rounded-full bg-cyan-500 text-slate-950 flex items-center justify-center hover:bg-cyan-400 transition-all flex-shrink-0"
+                  className="w-8 h-8 rounded-full bg-gradient-to-r from-rose-500 to-peach-500 text-white flex items-center justify-center hover:from-rose-400 hover:to-peach-400 transition-all flex-shrink-0 shadow-sm"
                 >
-                  {isPlayingAudio ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
+                  {isPlayingAudio ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 ml-0.5" />}
                 </button>
                 <div>
                   <span className="text-xs font-semibold text-slate-200 block">
-                    🔊 Jaipur Royal Courtyards Commentary (03:45 mins)
+                    🔊 3-Minute Story: Royal History of Hawa Mahal
                   </span>
-                  <span className="text-[10px] text-cyan-400 font-mono">
-                    {isPlayingAudio ? 'Streaming offline audio cache...' : 'Click play for offline audio guide'}
+                  <span className="text-[10px] text-slate-400">
+                    {isPlayingAudio ? 'Playing...' : 'Click to listen offline'}
                   </span>
                 </div>
               </div>
+              <span className="text-[10px] text-slate-500 font-mono hidden sm:block">Audio Ready</span>
+            </div>
 
-              <span className="text-[11px] font-mono text-slate-400 hidden sm:block">
-                MP3 Pre-cached
+            {/* Check-In Button */}
+            <button
+              type="button"
+              onClick={markCurrentStopVisited}
+              className={`w-full py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all ${
+                isCurrentStopVisited
+                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/50'
+                  : 'bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 shadow-glow-emerald'
+              }`}
+            >
+              <CheckCircle2 className="w-4 h-4" />
+              <span>
+                {isCurrentStopVisited
+                  ? 'Checked In! Next: Sunset at Nahargarh Fort'
+                  : 'Mark as Visited & Checked In'}
               </span>
-            </div>
-
-            {/* Mark as Visited Check-in Button */}
-            <div className="pt-1">
-              <button
-                type="button"
-                onClick={markCurrentStopVisited}
-                className={`w-full py-3.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all ${
-                  isCurrentStopVisited
-                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/50'
-                    : 'bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 shadow-glow-emerald'
-                }`}
-              >
-                <CheckCircle2 className="w-4 h-4" />
-                <span>
-                  {isCurrentStopVisited
-                    ? 'Stop Checked In! Advancing to Sunset at Nahargarh Fort'
-                    : 'Mark as Visited & Checked In'}
-                </span>
-              </button>
-            </div>
+            </button>
           </div>
 
-          {/* Proactive Alarm Card: Departure Alert */}
-          <div className="p-5 rounded-2xl bg-gradient-to-r from-amber-950/40 via-slate-900/80 to-slate-900/90 border border-amber-500/40 space-y-3 shadow-lg">
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 flex-shrink-0">
-                  <BellRing className="w-5 h-5 animate-bounce" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 uppercase">
-                      Proactive AI Alarm
-                    </span>
-                    <span className="text-xs font-mono font-bold text-amber-400">
-                      T-minus {formatCountdown(countdownSeconds)}
-                    </span>
-                  </div>
-                  <h3 className="font-bold text-sm text-slate-100 mt-1">
-                    🔔 Departure Alert: Leave in 15 minutes to reach Albert Hall Museum on schedule.
-                  </h3>
-                  <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                    Calculating city traffic buffer on Sireh Deori Bazar. Leaving by 04:15 PM preserves daytime lighting for outdoor photography before museum ticket counter closes at 05:00 PM.
-                  </p>
-                </div>
+          {/* Simple Alarm Box */}
+          <div className="p-4 rounded-2xl bg-amber-950/30 border border-amber-500/40 flex items-start gap-3">
+            <div className="w-9 h-9 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 flex-shrink-0">
+              <BellRing className="w-4 h-4 animate-bounce" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold uppercase text-amber-400">
+                  Departure Alarm
+                </span>
+                <span className="text-xs font-mono font-bold text-amber-300">
+                  Leave in {formatCountdown(countdownSeconds)}
+                </span>
               </div>
+              <h3 className="font-bold text-xs text-slate-100 mt-0.5">
+                Leave in 15 minutes to reach Albert Hall Museum on schedule.
+              </h3>
+              <p className="text-[11px] text-slate-400 mt-0.5">
+                Arriving by 04:30 PM avoids ticket lines before the evening rush.
+              </p>
             </div>
           </div>
 
           {/* DUAL NAVIGATION BUTTONS */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-            {/* Primary: Open Turn-by-Turn Route in Google Maps */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {/* Primary: View in Google Maps button (prototype UI only - does nothing when clicked) */}
             <button
-              onClick={() => setIsExternalMapOpen(true)}
-              className="p-4 rounded-2xl bg-gradient-to-r from-cyan-500 via-sky-400 to-indigo-500 hover:from-cyan-400 hover:to-indigo-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-2.5 shadow-glow-cyan transition-all transform hover:-translate-y-0.5"
+              type="button"
+              onClick={() => {}}
+              className="p-3.5 rounded-2xl bg-gradient-to-r from-rose-500 to-peach-500 hover:from-rose-400 hover:to-peach-400 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-glow-sunset transition-all cursor-pointer"
             >
-              <Navigation className="w-4 h-4 text-slate-950" />
-              <span>🗺️ Open Turn-by-Turn Route in Google Maps</span>
+              <Navigation className="w-4 h-4 text-white" />
+              <span>🗺️ View in Google Maps</span>
             </button>
 
-            {/* Secondary: Download Offline Day Package (.GPX / .KML) */}
+            {/* Secondary: Download Offline Day Package (prototype UI only - does nothing when clicked) */}
             <button
-              onClick={() => setIsOfflineDownloadOpen(true)}
-              className="p-4 rounded-2xl bg-slate-900 hover:bg-slate-850 border border-slate-700/80 text-slate-200 font-semibold text-xs flex items-center justify-center gap-2.5 transition-all shadow-md"
+              type="button"
+              onClick={() => {}}
+              className="p-3.5 rounded-2xl bg-slate-900 hover:bg-slate-850 border border-slate-700 text-slate-200 font-semibold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer"
             >
-              <HardDriveDownload className="w-4 h-4 text-cyan-400" />
-              <span>📥 Download Offline Day Package (.GPX / .KML)</span>
+              <HardDriveDownload className="w-4 h-4 text-peach-400" />
+              <span>📥 Download Offline Package (.GPX)</span>
             </button>
           </div>
 
-          {/* DYNAMIC RESCHEDULER SIMULATION SECTION */}
-          <div className="glass-panel p-5 sm:p-6 rounded-2xl border-slate-800 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+          {/* Adaptive Rescheduler Box */}
+          <div className="glass-panel p-5 rounded-2xl border-slate-800 space-y-3">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
               <div className="flex items-center gap-2">
-                <RotateCcw className="w-4 h-4 text-cyan-400" />
-                <h3 className="font-display font-bold text-sm text-slate-100">
-                  Adaptive AI Rescheduler Simulation
+                <RotateCcw className="w-4 h-4 text-rose-400" />
+                <h3 className="font-display font-bold text-xs text-slate-100">
+                  Smart Plan Rescheduler
                 </h3>
               </div>
-              <span className="text-[10px] text-cyan-400 font-mono">Autonomous Recalibration</span>
+              <span className="text-[10px] text-slate-500">Auto-detects delays</span>
             </div>
 
-            {/* Interactive Missed Stop Box */}
-            <div className="p-4 rounded-xl bg-slate-950/80 border border-amber-700/50 space-y-3">
-              <div className="flex items-start gap-2.5">
+            <div className="p-3.5 rounded-xl bg-slate-950/80 border border-amber-800/40 space-y-2.5">
+              <div className="flex items-start gap-2">
                 <AlertTriangle className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" />
-                <div className="space-y-1">
-                  <span className="text-xs font-bold text-amber-300 block">
-                    ⚠️ Missed Check-in Detected: You did not check in at Albert Hall Museum by 4:30 PM. Would you like to drop this stop or reschedule it to tomorrow morning?
+                <div className="text-xs text-slate-300">
+                  <span className="font-semibold text-amber-300 block">
+                    Missed Stop: Albert Hall Museum (by 4:30 PM)
                   </span>
-                  <p className="text-[11px] text-slate-400 leading-relaxed">
-                    AI Agent detected GPS location remained at LMB Lunch Stop past projected departure slot.
-                  </p>
+                  Would you like to move this stop to tomorrow morning or drop it?
                 </div>
               </div>
 
-              {/* Resolution Message after Click */}
               {missedStopState.resolutionMessage && (
-                <div className="p-3 rounded-lg bg-slate-900/90 border border-cyan-500/40 text-xs font-medium text-cyan-300 animate-fade-in">
+                <div className="p-2.5 rounded-lg bg-slate-900 border border-rose-500/40 text-xs text-rose-300">
                   {missedStopState.resolutionMessage}
                 </div>
               )}
 
-              {/* Two Clickable Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-2.5 pt-1">
+              <div className="flex flex-col sm:flex-row gap-2 pt-1">
                 <button
                   type="button"
                   onClick={rescheduleMissedStop}
-                  className={`flex-1 py-2.5 px-4 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all ${
+                  className={`flex-1 py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
                     missedStopState.status === 'rescheduled'
-                      ? 'bg-emerald-500 text-slate-950 shadow-glow-emerald font-bold'
-                      : 'bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40'
+                      ? 'bg-emerald-500 text-slate-950 font-bold'
+                      : 'bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40'
                   }`}
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                   <span>
                     {missedStopState.status === 'rescheduled'
-                      ? '✓ Rescheduled to Day 2 Morning'
+                      ? '✓ Moved to Tomorrow Morning'
                       : '[Reschedule to Day 2 Morning]'}
                   </span>
                 </button>
@@ -278,9 +259,9 @@ export const LiveNavScreen: React.FC = () => {
                 <button
                   type="button"
                   onClick={dropMissedStop}
-                  className={`py-2.5 px-4 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all ${
+                  className={`py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
                     missedStopState.status === 'dropped'
-                      ? 'bg-slate-700 text-slate-300 font-bold'
+                      ? 'bg-slate-700 text-slate-200 font-bold'
                       : 'bg-slate-800 hover:bg-slate-750 text-slate-300 border border-slate-700'
                   }`}
                 >
@@ -293,53 +274,53 @@ export const LiveNavScreen: React.FC = () => {
           </div>
         </div>
 
-        {/* RIGHT COLUMN: REAL-TIME VECTOR MAP & SAFETY CURFEW TELEMETRY (5 COLS) */}
-        <div className="lg:col-span-5 space-y-5">
-          <div className="space-y-2">
-            <div className="flex items-center justify-between text-xs">
-              <span className="font-semibold text-slate-300 flex items-center gap-1.5">
-                <Compass className="w-3.5 h-3.5 text-cyan-400" />
-                Live En Route GPS Visualizer
-              </span>
-              <span className="text-[11px] text-emerald-400 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Live Lock
-              </span>
+        {/* Side Column: Map Toggle & Sunset Curfew (4 Cols) */}
+        <div className="lg:col-span-4 space-y-4">
+          <div className="ios-card p-5 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-200">Live Route Map</span>
+              <button
+                onClick={() => setShowLiveMap(!showLiveMap)}
+                className="text-xs text-rose-400 hover:underline flex items-center gap-1 active:scale-95"
+              >
+                {showLiveMap ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
+                <span>{showLiveMap ? 'Hide' : 'Show Map'}</span>
+              </button>
             </div>
 
-            <VectorMap
-              stops={day1Plan.stops}
-              selectedStopId="stop-1-5"
-              activeLiveStopId="stop-1-5"
-              onSelectStop={(id) => {
-                showToast(`Waypoint telemetry selected: ${id}`, 'info');
-              }}
-            />
+            {showLiveMap ? (
+              <div className="animate-fade-in">
+                <VectorMap
+                  stops={day1Plan.stops}
+                  selectedStopId="stop-1-5"
+                  activeLiveStopId="stop-1-5"
+                  onSelectStop={() => {}}
+                />
+              </div>
+            ) : (
+              <div
+                onClick={() => setShowLiveMap(true)}
+                className="h-32 rounded-2xl ios-subcard cursor-pointer flex flex-col items-center justify-center text-center p-3 text-xs text-slate-400 transition-colors"
+              >
+                <Map className="w-6 h-6 text-rose-400 mb-1" />
+                <span className="text-slate-200 font-semibold">Click to preview route map</span>
+                <span className="text-[10px] text-slate-500">6 waypoints in Jaipur</span>
+              </div>
+            )}
           </div>
 
-          {/* Sunset Curfew Telemetry Card */}
-          <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-                <Radio className="w-3.5 h-3.5 text-amber-400" />
-                Demographic Safety Curfew Monitor
-              </span>
-              <span className="px-2 py-0.5 rounded text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono">
-                8:00 PM Hard Limit
-              </span>
+          {/* Evening Curfew Monitor */}
+          <div className="ios-card p-5 space-y-2.5">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-semibold text-slate-300">Evening 8:00 PM Curfew</span>
+              <span className="text-amber-400 font-mono font-bold">2h 15m remaining</span>
             </div>
-
-            <div className="space-y-1.5">
-              <div className="flex justify-between text-xs text-slate-400">
-                <span>Sunset Window: 05:30 PM</span>
-                <span className="text-amber-400 font-mono font-bold">2h 15m remaining</span>
-              </div>
-              <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-slate-800">
-                <div className="bg-gradient-to-r from-emerald-500 via-amber-500 to-red-500 h-full w-[72%]"></div>
-              </div>
-              <p className="text-[11px] text-slate-500 pt-1">
-                AI Agent will trigger a pre-curfew notification at 07:15 PM to initiate vehicular descent from Nahargarh hilltop.
-              </p>
+            <div className="w-full bg-black/40 h-2 rounded-full overflow-hidden border border-white/10">
+              <div className="bg-gradient-to-r from-emerald-500 via-amber-500 to-rose-500 h-full w-[72%]"></div>
             </div>
+            <p className="text-[11px] text-slate-400">
+              We will remind you at 7:15 PM to head back from Nahargarh hilltop before dark.
+            </p>
           </div>
         </div>
       </div>

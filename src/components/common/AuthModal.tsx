@@ -14,7 +14,7 @@ import {
 
 export const AuthModal: React.FC = () => {
   const { isAuthModalOpen, setIsAuthModalOpen, userSession, loginWithGoogle, loginWithEmail, logout } = useTrip();
-  const [email, setEmail] = useState('aarav.sharma@gmail.com');
+  const [email, setEmail] = useState('rohan.sharma@example.com');
   const [password, setPassword] = useState('SecurePass2026!');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -35,24 +35,24 @@ export const AuthModal: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xl animate-fade-in">
+      <div className="relative w-full max-w-md ios-card-elevated rounded-[28px] overflow-hidden flex flex-col shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-slate-800 bg-slate-950/50">
+        <div className="flex items-center justify-between p-5 border-b border-white/10 bg-white/[0.04]">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+            <div className="w-9 h-9 rounded-2xl bg-rose-500/20 border border-rose-500/30 flex items-center justify-center text-rose-300">
               <Lock className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-display font-bold text-base text-slate-100">
+              <h3 className="font-display font-bold text-base text-white">
                 {userSession.isAuthenticated ? 'Traveler Session Profile' : 'Sign In to TripGenie'}
               </h3>
-              <p className="text-xs text-slate-400">Supabase Auth with Row-Level Security (RLS)</p>
+              <p className="text-xs text-white/50">Supabase Auth with Row-Level Security (RLS)</p>
             </div>
           </div>
           <button
             onClick={() => setIsAuthModalOpen(false)}
-            className="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition-all"
+            className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white flex items-center justify-center transition-all active:scale-95"
           >
             <X className="w-4 h-4" />
           </button>
@@ -62,7 +62,7 @@ export const AuthModal: React.FC = () => {
         <div className="p-6 space-y-5">
           {userSession.isAuthenticated ? (
             <div className="space-y-4">
-              <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center gap-3.5">
+              <div className="p-4 ios-subcard rounded-2xl flex items-center gap-3.5">
                 <img
                   src={userSession.avatar}
                   alt={userSession.name}
@@ -70,37 +70,37 @@ export const AuthModal: React.FC = () => {
                 />
                 <div>
                   <div className="flex items-center gap-2">
-                    <h4 className="font-bold text-sm text-slate-100">{userSession.name}</h4>
-                    <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-emerald-950 text-emerald-400 border border-emerald-800">
+                    <h4 className="font-bold text-sm text-white">{userSession.name}</h4>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                       Verified
                     </span>
                   </div>
-                  <p className="text-xs text-slate-400">{userSession.email}</p>
-                  <p className="text-[11px] text-cyan-400 mt-1">Auth Provider: {userSession.provider} OAuth</p>
+                  <p className="text-xs text-white/60">{userSession.email}</p>
+                  <p className="text-[11px] text-peach-300 mt-1">Auth Provider: {userSession.provider} OAuth</p>
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-slate-800/40 border border-slate-700/60 text-xs text-slate-300 space-y-1.5">
+              <div className="p-3.5 ios-subcard rounded-2xl text-xs text-white/80 space-y-1.5">
                 <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-slate-400">TripGenie Token Status:</span>
+                  <span className="text-white/50">TripGenie Token Status:</span>
                   <span className="text-emerald-400 font-mono font-medium">JWT VALID (Expires in 6d)</span>
                 </div>
                 <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-slate-400">RLS Policy Scope:</span>
-                  <span className="text-slate-200 font-mono">user_id = auth.uid()</span>
+                  <span className="text-white/50">RLS Policy Scope:</span>
+                  <span className="text-white/80 font-mono">user_id = auth.uid()</span>
                 </div>
               </div>
 
               <div className="flex gap-2 pt-2">
                 <button
                   onClick={() => setIsAuthModalOpen(false)}
-                  className="flex-1 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 transition-all"
+                  className="flex-1 py-2.5 ios-btn-secondary text-xs font-semibold"
                 >
                   Continue Trip
                 </button>
                 <button
                   onClick={() => logout()}
-                  className="px-4 py-2 rounded-xl text-xs font-semibold bg-red-950/60 hover:bg-red-900/60 text-red-300 border border-red-800/60 flex items-center gap-1.5 transition-all"
+                  className="px-4 py-2.5 rounded-full text-xs font-semibold bg-red-500/20 hover:bg-red-500/30 text-red-200 border border-red-500/30 flex items-center gap-1.5 transition-all active:scale-95"
                 >
                   <LogOut className="w-3.5 h-3.5" />
                   <span>Sign Out</span>
@@ -113,7 +113,7 @@ export const AuthModal: React.FC = () => {
               <button
                 type="button"
                 onClick={loginWithGoogle}
-                className="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-semibold text-xs flex items-center justify-center gap-2.5 shadow-md transition-all group"
+                className="w-full py-2.5 px-4 rounded-full bg-white text-slate-900 font-semibold text-xs flex items-center justify-center gap-2.5 shadow-lg hover:bg-white/90 active:scale-95 transition-all group"
               >
                 <svg className="w-4 h-4" viewBox="0 0 24 24">
                   <path
@@ -137,46 +137,46 @@ export const AuthModal: React.FC = () => {
               </button>
 
               <div className="relative flex items-center justify-center my-3">
-                <div className="border-t border-slate-800 w-full"></div>
-                <span className="bg-slate-900 px-3 text-[10px] uppercase font-semibold text-slate-500 absolute">
+                <div className="border-t border-white/10 w-full"></div>
+                <span className="bg-[#1e172a] px-3 text-[10px] uppercase font-semibold text-white/40 absolute rounded-full">
                   Or Email Sign In
                 </span>
               </div>
 
               {/* Email Input with Simulated Live Checkmark */}
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-300">Traveler Email</label>
+                <label className="text-xs font-medium text-white/80">Traveler Email</label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-3 w-4 h-4 text-slate-500" />
+                  <Mail className="absolute left-3.5 top-3 w-4 h-4 text-white/40" />
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="name@example.com"
-                    className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 rounded-xl pl-9 pr-9 py-2 text-xs text-slate-100 placeholder-slate-600 focus:outline-none transition-colors"
+                    className="w-full ios-input rounded-2xl pl-10 pr-9 py-2.5 text-xs text-white placeholder-white/30"
                   />
                   {isEmailValid ? (
-                    <CheckCircle2 className="absolute right-3 top-3 w-4 h-4 text-emerald-400" />
+                    <CheckCircle2 className="absolute right-3.5 top-3 w-4 h-4 text-emerald-400" />
                   ) : (
-                    <AlertCircle className="absolute right-3 top-3 w-4 h-4 text-amber-500" />
+                    <AlertCircle className="absolute right-3.5 top-3 w-4 h-4 text-amber-400" />
                   )}
                 </div>
               </div>
 
               {/* Password Input with Strength Checkmark */}
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-300">Password</label>
+                <label className="text-xs font-medium text-white/80">Password</label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-3 w-4 h-4 text-slate-500" />
+                  <Lock className="absolute left-3.5 top-3 w-4 h-4 text-white/40" />
                   <input
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Min 8 characters"
-                    className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 rounded-xl pl-9 pr-9 py-2 text-xs text-slate-100 placeholder-slate-600 focus:outline-none transition-colors"
+                    className="w-full ios-input rounded-2xl pl-10 pr-9 py-2.5 text-xs text-white placeholder-white/30"
                   />
                   {isPasswordValid && (
-                    <CheckCircle2 className="absolute right-3 top-3 w-4 h-4 text-emerald-400" />
+                    <CheckCircle2 className="absolute right-3.5 top-3 w-4 h-4 text-emerald-400" />
                   )}
                 </div>
                 <div className="flex items-center gap-1.5 mt-1">
@@ -190,7 +190,7 @@ export const AuthModal: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-2.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-slate-950 flex items-center justify-center gap-1.5 shadow-glow-cyan transition-all"
+                className="w-full py-2.5 ios-btn-primary text-xs font-semibold flex items-center justify-center gap-1.5"
               >
                 {isSubmitting ? (
                   <span>Authenticating...</span>
@@ -205,7 +205,7 @@ export const AuthModal: React.FC = () => {
           )}
 
           {/* Security Footer */}
-          <div className="pt-3 border-t border-slate-800/80 flex items-center justify-center gap-2 text-[11px] text-slate-500">
+          <div className="pt-3 border-t border-white/10 flex items-center justify-center gap-2 text-[11px] text-white/50">
             <ShieldCheck className="w-4 h-4 text-emerald-400" />
             <span>Protected with Supabase Auth & Row-Level Security (RLS)</span>
           </div>

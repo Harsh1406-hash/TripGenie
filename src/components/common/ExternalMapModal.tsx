@@ -7,10 +7,10 @@ import {
   Check,
   Navigation2,
   CornerUpRight,
-  ShieldAlert,
   Car,
   Clock,
   Compass,
+  MapPin,
 } from 'lucide-react';
 
 export const ExternalMapModal: React.FC = () => {
@@ -21,125 +21,118 @@ export const ExternalMapModal: React.FC = () => {
 
   const handleCopyCoords = () => {
     setCopied(true);
-    navigator.clipboard?.writeText?.('26.9239° N, 75.8267° E (Hawa Mahal, Jaipur)');
-    showToast('GPS coordinates copied to clipboard: 26.9239° N, 75.8267° E', 'success');
+    navigator.clipboard?.writeText?.('26.9239, 75.8267');
+    showToast('GPS coordinates copied: 26.9239, 75.8267', 'success');
     setTimeout(() => setCopied(false), 2500);
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-xl bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xl animate-fade-in">
+      <div className="relative w-full max-w-2xl ios-card-elevated rounded-[28px] overflow-hidden flex flex-col max-h-[90vh] shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-slate-800 bg-slate-950/50">
+        <div className="flex items-center justify-between p-4 sm:p-5 border-b border-white/10 bg-white/[0.04]">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+            <div className="w-9 h-9 rounded-2xl bg-rose-500/20 border border-rose-500/30 flex items-center justify-center text-rose-300">
               <Navigation2 className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-display font-bold text-base text-slate-100">
-                Google Maps GPS Turn-by-Turn Telemetry
+              <h3 className="font-display font-bold text-base text-white">
+                Live Google Maps Route
               </h3>
-              <p className="text-xs text-slate-400">Synchronized with TripGenie Route Anchor Engine</p>
+              <p className="text-xs text-white/50">Turn-by-turn route to Hawa Mahal</p>
             </div>
           </div>
           <button
             onClick={() => setIsExternalMapOpen(false)}
-            className="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition-all"
+            className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white flex items-center justify-center transition-all active:scale-95"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Content */}
-        <div className="p-6 space-y-4">
-          <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-cyan-400 uppercase tracking-wider">
-                Destination Target
-              </span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800">
-                Fastest Level Route
-              </span>
-            </div>
-            <div className="flex items-start justify-between">
-              <div>
-                <h4 className="font-bold text-base text-slate-100">Hawa Mahal (Palace of Winds)</h4>
-                <p className="text-xs text-slate-400 mt-0.5">
-                  Badi Choupad, J.D.A. Market, Pink City, Jaipur, Rajasthan 302002
-                </p>
+        {/* Real Embedded Google Map */}
+        <div className="relative w-full h-64 sm:h-72 bg-black/50 border-b border-white/10">
+          <iframe
+            title="Google Map Route to Hawa Mahal"
+            width="100%"
+            height="100%"
+            frameBorder="0"
+            scrolling="no"
+            marginHeight={0}
+            marginWidth={0}
+            src="https://maps.google.com/maps?q=Hawa+Mahal,+Jaipur,+Rajasthan&t=&z=15&ie=UTF8&iwloc=&output=embed"
+            className="w-full h-full filter invert-[90%] hue-rotate-180 contrast-[88%]"
+          ></iframe>
+
+          {/* Quick HUD badge over map */}
+          <div className="absolute top-3 left-3 px-3 py-1.5 rounded-full ios-card text-xs flex items-center gap-2 shadow-lg">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span className="font-semibold text-white/90">Destination: Hawa Mahal</span>
+          </div>
+        </div>
+
+        {/* Turn-by-Turn Guidance & Info */}
+        <div className="p-4 sm:p-5 space-y-3.5 overflow-y-auto">
+          {/* Destination Details */}
+          <div className="flex items-start justify-between gap-3 p-3.5 rounded-2xl ios-subcard">
+            <div>
+              <div className="flex items-center gap-1.5 text-xs text-rose-300 font-semibold">
+                <MapPin className="w-3.5 h-3.5" />
+                <span>Next Stop</span>
               </div>
-              <button
-                onClick={handleCopyCoords}
-                className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-300 flex items-center gap-1.5 transition-all"
-              >
-                {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                <span>{copied ? 'Copied' : 'Copy GPS'}</span>
-              </button>
+              <h4 className="font-bold text-sm text-white mt-0.5">
+                Hawa Mahal (Palace of Winds)
+              </h4>
+              <p className="text-xs text-white/60">
+                Badi Choupad, Pink City, Jaipur (2.4 km away • 12 mins drive)
+              </p>
             </div>
+            <button
+              onClick={handleCopyCoords}
+              className="px-3 py-1.5 ios-btn-secondary text-xs flex items-center gap-1.5 flex-shrink-0"
+            >
+              {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+              <span>{copied ? 'Copied' : 'Copy GPS'}</span>
+            </button>
           </div>
 
-          {/* Turn Guidance Simulation */}
-          <div className="space-y-2">
-            <span className="text-xs font-semibold text-slate-300">Next Maneuver Guidance:</span>
-            <div className="p-3.5 rounded-xl bg-slate-800/50 border border-slate-700/60 flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center flex-shrink-0">
-                <CornerUpRight className="w-5 h-5" />
-              </div>
-              <div className="flex-1">
-                <p className="text-xs font-semibold text-slate-200">
-                  In 350m, Turn Right onto Johari Bazaar Road
-                </p>
-                <p className="text-[11px] text-slate-400 mt-0.5">
-                  Ramp access parking is available 80m ahead near Sireh Deori Gate.
-                </p>
-              </div>
+          {/* Next Turn Maneuver */}
+          <div className="p-3.5 rounded-2xl ios-subcard flex items-center gap-3">
+            <div className="w-9 h-9 rounded-2xl bg-peach-500/20 border border-peach-500/30 text-peach-300 flex items-center justify-center flex-shrink-0">
+              <CornerUpRight className="w-4 h-4" />
             </div>
-          </div>
-
-          {/* Safety & Transit Info */}
-          <div className="grid grid-cols-2 gap-3 text-xs">
-            <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800 flex items-center gap-2.5">
-              <Clock className="w-4 h-4 text-amber-400" />
-              <div>
-                <span className="text-slate-400 block text-[10px]">Estimated ETA</span>
-                <span className="font-semibold text-slate-200">12 Mins • 2.4 km</span>
-              </div>
-            </div>
-            <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800 flex items-center gap-2.5">
-              <Car className="w-4 h-4 text-emerald-400" />
-              <div>
-                <span className="text-slate-400 block text-[10px]">Traffic Status</span>
-                <span className="font-semibold text-emerald-400">Light Green Flow</span>
-              </div>
+            <div>
+              <p className="text-xs font-semibold text-white">
+                In 350m, Turn Right onto Johari Bazaar Road
+              </p>
+              <p className="text-[11px] text-white/50">
+                Designated parking and flat ramp access 80m ahead near Sireh Deori Gate.
+              </p>
             </div>
           </div>
         </div>
 
         {/* Footer CTAs */}
-        <div className="p-4 border-t border-slate-800 bg-slate-950/50 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span className="text-[11px] text-slate-500 flex items-center gap-1.5">
-            <Compass className="w-3.5 h-3.5 text-cyan-400" />
-            Zero-backtracking route calibrated
+        <div className="p-4 border-t border-white/10 bg-white/[0.02] flex flex-col sm:flex-row items-center justify-between gap-3">
+          <span className="text-xs text-white/50 flex items-center gap-1.5">
+            <Compass className="w-3.5 h-3.5 text-rose-300" />
+            <span>Optimal zero-backtracking route</span>
           </span>
+
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <button
               onClick={() => setIsExternalMapOpen(false)}
-              className="flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800 transition-all"
+              className="flex-1 sm:flex-none px-4 py-2 ios-btn-secondary text-xs font-medium"
             >
               Close
             </button>
-            <a
-              href="https://www.google.com/maps/search/?api=1&query=Hawa+Mahal+Jaipur"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => {
-                showToast('Launching Google Maps turn-by-turn navigation...', 'info');
-              }}
-              className="flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-slate-950 flex items-center justify-center gap-1.5 shadow-glow-cyan transition-all"
+            <button
+              onClick={() => {}}
+              className="flex-1 sm:flex-none px-4 py-2 ios-btn-primary text-xs font-bold flex items-center justify-center gap-1.5"
             >
-              <span>Open in App</span>
+              <span>Open in Google Maps App</span>
               <ExternalLink className="w-3.5 h-3.5" />
-            </a>
+            </button>
           </div>
         </div>
       </div>

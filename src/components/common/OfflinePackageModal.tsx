@@ -56,24 +56,24 @@ export const OfflinePackageModal: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-xl bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xl animate-fade-in">
+      <div className="relative w-full max-w-xl ios-card-elevated rounded-[28px] overflow-hidden flex flex-col shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-slate-800 bg-slate-950/50">
+        <div className="flex items-center justify-between p-5 border-b border-white/10 bg-white/[0.04]">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+            <div className="w-9 h-9 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-300">
               <HardDriveDownload className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-display font-bold text-base text-slate-100">
+              <h3 className="font-display font-bold text-base text-white">
                 Zero-Data Offline Navigation Package
               </h3>
-              <p className="text-xs text-slate-400">Works in hill areas and low-cellular dead zones</p>
+              <p className="text-xs text-white/50">Works in hill areas and low-cellular dead zones</p>
             </div>
           </div>
           <button
             onClick={() => setIsOfflineDownloadOpen(false)}
-            className="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition-all"
+            className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white flex items-center justify-center transition-all active:scale-95"
           >
             <X className="w-4 h-4" />
           </button>
@@ -81,59 +81,59 @@ export const OfflinePackageModal: React.FC = () => {
 
         {/* Payload Manifest */}
         <div className="p-6 space-y-4">
-          <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800 space-y-2">
-            <span className="text-xs font-semibold text-emerald-400 uppercase tracking-wider">
+          <div className="p-4 rounded-2xl ios-subcard space-y-2">
+            <span className="text-xs font-semibold text-emerald-300 uppercase tracking-wider">
               Package Manifest (v2.4 Compressed)
             </span>
-            <div className="space-y-2 pt-1 text-xs text-slate-300">
-              <div className="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800/80">
+            <div className="space-y-2 pt-1 text-xs text-white/80">
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.03] border border-white/5">
                 <span className="flex items-center gap-2 font-mono">
-                  <FileCode2 className="w-4 h-4 text-cyan-400" />
+                  <FileCode2 className="w-4 h-4 text-rose-300" />
                   TripGenie_Jaipur_Day1.gpx
                 </span>
-                <span className="text-slate-500 text-[11px]">14 Waypoints • 42 KB</span>
+                <span className="text-white/40 text-[11px]">14 Waypoints • 42 KB</span>
               </div>
-              <div className="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800/80">
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.03] border border-white/5">
                 <span className="flex items-center gap-2 font-mono">
-                  <FileCheck className="w-4 h-4 text-emerald-400" />
+                  <FileCheck className="w-4 h-4 text-emerald-300" />
                   Heritage_StepFree_MapOverlay.kml
                 </span>
-                <span className="text-slate-500 text-[11px]">Vector Paths • 185 KB</span>
+                <span className="text-white/40 text-[11px]">Vector Paths • 185 KB</span>
               </div>
-              <div className="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800/80">
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.03] border border-white/5">
                 <span className="flex items-center gap-2 font-mono">
-                  <Smartphone className="w-4 h-4 text-amber-400" />
+                  <Smartphone className="w-4 h-4 text-peach-300" />
                   Emergency_Contacts_Offline.json
                 </span>
-                <span className="text-slate-500 text-[11px]">SOS Numbers • 12 KB</span>
+                <span className="text-white/40 text-[11px]">SOS Numbers • 12 KB</span>
               </div>
             </div>
           </div>
 
           {/* Offline Security Note */}
-          <div className="p-3.5 rounded-xl bg-slate-800/40 border border-slate-700/60 flex items-start gap-3 text-xs">
+          <div className="p-3.5 rounded-2xl ios-subcard flex items-start gap-3 text-xs">
             <ShieldCheck className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
-            <div className="text-slate-300">
-              <span className="font-semibold text-slate-100 block">Battery & Data Optimized</span>
+            <div className="text-white/70">
+              <span className="font-semibold text-white block">Battery & Data Optimized</span>
               Runs natively on device GPS hardware without consuming mobile data, keeping device cool during full-day sightseeing.
             </div>
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="p-4 border-t border-slate-800 bg-slate-950/50 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="p-4 border-t border-white/10 bg-white/[0.02] flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <button
               onClick={() => handleDownload('KML')}
               disabled={downloading}
-              className="px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all"
+              className="px-3.5 py-1.5 ios-btn-secondary text-xs font-medium"
             >
               Export .KML
             </button>
             <button
               onClick={() => handleDownload('GPX')}
               disabled={downloading}
-              className="px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all"
+              className="px-3.5 py-1.5 ios-btn-secondary text-xs font-medium"
             >
               Export .GPX
             </button>
@@ -142,11 +142,11 @@ export const OfflinePackageModal: React.FC = () => {
           <button
             onClick={() => handleDownload('BUNDLE')}
             disabled={downloading}
-            className="w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 flex items-center justify-center gap-2 shadow-glow-emerald transition-all"
+            className="w-full sm:w-auto px-5 py-2.5 ios-btn-primary text-xs font-semibold flex items-center justify-center gap-2"
           >
             {downloading ? (
               <span className="flex items-center gap-2">
-                <span className="w-3.5 h-3.5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin"></span>
+                <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                 Packaging Bundle...
               </span>
             ) : downloadCompleted ? (

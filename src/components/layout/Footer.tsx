@@ -1,62 +1,39 @@
 import React from 'react';
 import { useTrip } from '../../context/TripContext';
-import { ShieldCheck, Compass, HardDriveDownload, Cpu, Radio, Github } from 'lucide-react';
+import { Compass, Sparkles } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   const { setCurrentScreen } = useTrip();
 
   return (
-    <footer className="border-t border-slate-900 bg-slate-950/90 text-slate-400 text-xs py-8 px-4 sm:px-6 lg:px-8 mt-16 no-print">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center">
-            <Compass className="w-4 h-4 text-cyan-400" />
+    <footer className="border-t border-white/[0.08] bg-[#0c0916]/60 backdrop-blur-3xl text-slate-400 text-xs py-6 px-4 sm:px-6 lg:px-8 mt-12 no-print relative z-10">
+      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+        {/* Simple Brand Punch Line */}
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-xl bg-white/[0.06] border border-white/[0.12] flex items-center justify-center text-rose-400 shadow-sm">
+            <Compass className="w-4 h-4" />
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-display font-bold text-slate-200">TripGenie Autonomous Planner</span>
-              <span className="px-1.5 py-0.2 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-800/60 text-[10px]">
-                Active Prototype
-              </span>
-            </div>
-            <p className="text-[11px] text-slate-500 mt-0.5">
-              Client-side autonomous travel agent with demographically adaptive safety & offline navigation.
-            </p>
-          </div>
+          <span className="font-semibold text-slate-200">
+            TripGenie — AI travel planning made simple & stress-free.
+          </span>
         </div>
 
-        {/* Feature Badges */}
-        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-[11px]">
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-900/80 border border-slate-800">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Supabase RLS Auth Guard</span>
-          </div>
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-900/80 border border-slate-800">
-            <HardDriveDownload className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Zero-Data GPX Cache</span>
-          </div>
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-900/80 border border-slate-800">
-            <Radio className="w-3.5 h-3.5 text-amber-400" />
-            <span>Curfew 8:00 PM Active</span>
-          </div>
-        </div>
-
-        {/* Quick Nav Links */}
-        <div className="flex items-center gap-4 text-slate-400">
-          <button onClick={() => setCurrentScreen('landing')} className="hover:text-cyan-400 transition-colors">
-            Overview
+        {/* Clean Nav Links */}
+        <div className="flex items-center gap-4 text-xs text-slate-400">
+          <button onClick={() => setCurrentScreen('landing')} className="hover:text-white transition-colors">
+            Home
           </button>
-          <button onClick={() => setCurrentScreen('intake')} className="hover:text-cyan-400 transition-colors">
-            Intake
+          <button onClick={() => setCurrentScreen('intake')} className="hover:text-white transition-colors">
+            Plan Trip
           </button>
-          <button onClick={() => setCurrentScreen('studio')} className="hover:text-cyan-400 transition-colors">
-            Studio
+          <button onClick={() => setCurrentScreen('studio')} className="hover:text-white transition-colors">
+            Schedule
           </button>
-          <button onClick={() => setCurrentScreen('live')} className="hover:text-cyan-400 transition-colors">
-            Live Nav
+          <button onClick={() => setCurrentScreen('live')} className="hover:text-white transition-colors">
+            Live Guide
           </button>
-          <button onClick={() => setCurrentScreen('dossier')} className="hover:text-cyan-400 transition-colors">
-            Dossier
+          <button onClick={() => setCurrentScreen('dossier')} className="hover:text-white transition-colors">
+            Travel Pass
           </button>
         </div>
       </div>

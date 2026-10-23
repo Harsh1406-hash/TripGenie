@@ -45,11 +45,13 @@ interface TripContextType {
   loginWithEmail: (email: string) => void;
   logout: () => void;
 
-  // Trip Parameters
+  // Trip Parameters & Sured Places
   tripParams: TripParams;
   updateTripParams: (params: Partial<TripParams>) => void;
   setGroupMode: (mode: GroupMode) => void;
   setModality: (modality: TripModality) => void;
+  addMustVisitPlace: (place: string) => void;
+  removeMustVisitPlace: (place: string) => void;
 
   // Travelers
   travelers: Traveler[];
@@ -60,12 +62,15 @@ interface TripContextType {
   simulateAddOcrChip: () => void;
   removeOcrChip: (id: string) => void;
 
-  // Studio Timeline
+  // Studio Timeline & Approval
   currentDay: number;
   setCurrentDay: (day: number) => void;
   dayPlans: DayPlan[];
   selectedStopId: string | null;
   setSelectedStopId: (id: string | null) => void;
+  toggleStopApproval: (dayNumber: number, stopId: string) => void;
+  isMapVisibleInStudio: boolean;
+  setIsMapVisibleInStudio: (visible: boolean | ((prev: boolean) => boolean)) => void;
 
   // Chat & Collab
   chatMessages: ChatMessage[];
@@ -93,6 +98,9 @@ interface TripContextType {
   isAuthModalOpen: boolean;
   setIsAuthModalOpen: (open: boolean) => void;
 
+  // Sharing
+  shareViaEmail: (email: string) => void;
+
   // Toast
   toast: ToastState | null;
   showToast: (message: string, type?: 'success' | 'info' | 'warning') => void;
@@ -109,6 +117,7 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [currentDay, setCurrentDay] = useState<number>(1);
   const [dayPlans, setDayPlans] = useState<DayPlan[]>(initialDayPlans);
   const [selectedStopId, setSelectedStopId] = useState<string | null>('stop-1-3');
+  const [isMapVisibleInStudio, setIsMapVisibleInStudio] = useState<boolean>(false);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>(initialChatMessages);
   const [proposal, setProposal] = useState<Proposal>(initialProposal);
 
@@ -141,7 +150,48 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const updateTripParams = (params: Partial<TripParams>) => {
     setTripParams((prev) => ({ ...prev, ...params }));
-    showToast('Trip parameters updated', 'info');
+    showToast('Trip settings updated', 'info');
+  };
+
+  const addMustVisitPlace = (place: string) => {
+    if (!place.trim()) return;
+    if (tripParams.mustVisitPlaces.includes(place.trim())) {
+      showToast('Place is already in your must-visit list!', 'info');
+      return;
+    }
+    const updated = [...tripParams.mustVisitPlaces, place.trim()];
+    setTripParams((prev) => ({ ...prev, mustVisitPlaces: updated }));
+    showToast(`Added "${place.trim()}" to your must-visit schedule!`, 'success');
+  };
+
+  const removeMustVisitPlace = (place: string) => {
+    const updated = tripParams.mustVisitPlaces.filter((p) => p !== place);
+    setTripParams((prev) => ({ ...prev, mustVisitPlaces: updated }));
+    showToast(`Removed "${place}" from must-visit list`, 'info');
+  };
+
+  const toggleStopApproval = (dayNumber: number, stopId: string) => {
+    setDayPlans((prev) =>
+      prev.map((day) => {
+        if (day.dayNumber === dayNumber) {
+          return {
+            ...day,
+            stops: day.stops.map((stop) => {
+              if (stop.id === stopId) {
+                const newStatus = stop.approved !== false ? false : true;
+                showToast(
+                  newStatus ? `Approved: "${stop.title}" is in your route` : `Removed: "${stop.title}" removed from schedule`,
+                  newStatus ? 'success' : 'info'
+                );
+                return { ...stop, approved: newStatus };
+              }
+              return stop;
+            }),
+          };
+        }
+        return day;
+      })
+    );
   };
 
   const setGroupMode = (groupType: GroupMode) => {
@@ -149,15 +199,14 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     if (groupType === 'Solo') {
       setTravelers([initialTravelers[0]]);
-      showToast('Switched to Solo traveler mode', 'info');
+      showToast('Set to Solo traveler mode', 'info');
     } else if (groupType === 'Couple') {
       setTravelers([initialTravelers[0], initialTravelers[1]]);
-      showToast('Switched to Couple mode (Aarav & Riya)', 'info');
+      showToast('Set to Couple trip mode (2 Travelers)', 'info');
     } else if (groupType === 'Family') {
       setTravelers(initialTravelers);
-      showToast('Switched to Family mode (Safety & accessibility filters active)', 'info');
+      showToast('Set to Family trip mode (Wheelchair & Safe routes on)', 'info');
     } else {
-      // Friends
       setTravelers([
         initialTravelers[0],
         initialTravelers[1],
@@ -166,14 +215,14 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           name: 'Kabir Mehta',
           age: 25,
           gender: 'Male',
-          role: 'Adventure Scout',
-          tags: ['Trekker', 'Night Owl'],
+          role: 'Friend / Explorer',
+          tags: ['Adventure', 'Night Owl'],
           emergencyContact: '+91 99000 11223',
           bloodGroup: 'AB+',
           avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&h=120&q=80',
         },
       ]);
-      showToast('Switched to Friends trip mode', 'info');
+      showToast('Set to Friends trip mode', 'info');
     }
   };
 
@@ -181,8 +230,8 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setTripParams((prev) => ({ ...prev, modality }));
     showToast(
       modality === 'workation'
-        ? 'Workation mode enabled: 10:00 AM – 3:30 PM locked for remote work'
-        : 'Casual / Leisure mode enabled: Full-day relaxed itinerary',
+        ? 'Workation mode: 10 AM – 3:30 PM reserved for work'
+        : 'Relaxed Vacation mode: Full day open for exploring',
       'info'
     );
   };
@@ -198,7 +247,7 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         return t;
       })
     );
-    showToast(`Updated traveler profile preference`, 'info');
+    showToast('Updated traveler preference', 'info');
   };
 
   const simulateAddOcrChip = () => {
@@ -207,18 +256,18 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       category: 'ticket',
       icon: '🎫',
       title: 'City Palace Fast-Track Pass',
-      subtitle: 'Baradari Courtyard & Museum entry voucher',
-      rawText: 'VOUCHER: CP-VIP-9942 | Adult x3 | Priority Wheelchair Line Assigned',
+      subtitle: 'VIP entry voucher with wheelchair ramp access',
+      rawText: 'Booking #CP-9942 • 3 Guests • Ground Floor Entry',
       timestamp: 'Nov 12, 12:15 PM',
       verified: true,
     };
     setOcrChips((prev) => [...prev, newChip]);
-    showToast('OCR extracted: City Palace Fast-Track Pass added!', 'success');
+    showToast('Scanned Ticket: City Palace Pass added to your schedule!', 'success');
   };
 
   const removeOcrChip = (id: string) => {
     setOcrChips((prev) => prev.filter((c) => c.id !== id));
-    showToast('Document anchor removed', 'info');
+    showToast('Ticket removed', 'info');
   };
 
   const addChatMessage = (text: string) => {
@@ -233,17 +282,16 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
     setChatMessages((prev) => [...prev, newMsg]);
 
-    // Simulate smart AI response after 1.2s
     setTimeout(() => {
       const aiReply: ChatMessage = {
         id: `msg-ai-${Date.now()}`,
-        sender: 'TripGenie AI Agent',
+        sender: 'TripGenie AI',
         avatar: '🤖',
         time: 'Just now',
-        text: `🤖 Autonomous Check: "${text}" analyzed. Route timing and wheelchair gradient verified against municipal road index.`,
+        text: `Got it! Checked timing and route for "${text}". Updated without any delays.`,
       };
       setChatMessages((prev) => [...prev, aiReply]);
-      showToast('AI Agent posted a response to the group chat', 'info');
+      showToast('TripGenie AI replied to group chat', 'info');
     }, 1200);
   };
 
@@ -260,7 +308,7 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         status: isNowPassed ? 'approved' : 'active',
       };
     });
-    showToast(`Your vote (${vote === 'approve' ? 'Approved' : 'Rejected'}) recorded!`, 'success');
+    showToast(`You voted ${vote === 'approve' ? 'Approve 👍' : 'Reject ✕'}!`, 'success');
   };
 
   const markCurrentStopVisited = () => {
@@ -276,7 +324,7 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         return day;
       })
     );
-    showToast('Hawa Mahal marked as Visited & Checked-in! Advancing to Sunset at Nahargarh Fort.', 'success');
+    showToast('Checked in at Hawa Mahal! Next stop: Sunset at Nahargarh Fort.', 'success');
   };
 
   const rescheduleMissedStop = () => {
@@ -284,9 +332,9 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       show: true,
       venueName: 'Albert Hall Museum',
       status: 'rescheduled',
-      resolutionMessage: '✅ Rescheduled to Day 2 Morning (09:15 AM). Route transit re-calculated without backtracking.',
+      resolutionMessage: '✅ Moved to tomorrow morning at 09:30 AM without any backtracking.',
     });
-    showToast('Stop successfully rescheduled to Day 2 morning!', 'success');
+    showToast('Rescheduled to tomorrow morning!', 'success');
   };
 
   const dropMissedStop = () => {
@@ -294,38 +342,45 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       show: true,
       venueName: 'Albert Hall Museum',
       status: 'dropped',
-      resolutionMessage: '🗑️ Albert Hall Museum dropped from route. Rest hour allocated for Dadi.',
+      resolutionMessage: 'Spot removed. You now have extra time to relax before dinner.',
     });
-    showToast('Stop dropped. 45 mins buffer added to dinner schedule.', 'info');
+    showToast('Removed from today’s route.', 'info');
   };
 
   const loginWithGoogle = () => {
     setUserSession({
-      name: 'Aarav Sharma',
-      email: 'aarav.sharma@gmail.com',
+      name: 'Rohan Sharma',
+      email: 'rohan.sharma@example.com',
       avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&h=120&q=80',
       isAuthenticated: true,
       provider: 'Google',
     });
     setIsAuthModalOpen(false);
-    showToast('Successfully authenticated via Google OAuth!', 'success');
   };
 
   const loginWithEmail = (email: string) => {
     setUserSession({
-      name: email.split('@')[0] || 'Demo Traveler',
-      email: email || 'traveler@tripgenie.ai',
+      name: email.split('@')[0] || 'Traveler',
+      email: email || 'traveler@gmail.com',
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80',
       isAuthenticated: true,
       provider: 'Email',
     });
     setIsAuthModalOpen(false);
-    showToast('Signed in with Supabase Auth session token!', 'success');
+    showToast('Signed in successfully!', 'success');
   };
 
   const logout = () => {
     setUserSession((prev) => ({ ...prev, isAuthenticated: false }));
-    showToast('Signed out of session', 'info');
+    showToast('Signed out', 'info');
+  };
+
+  const shareViaEmail = (email: string) => {
+    if (!email || !email.includes('@')) {
+      showToast('Please enter a valid email address', 'warning');
+      return;
+    }
+    showToast(`Trip invite & pass sent to ${email}!`, 'success');
   };
 
   return (
@@ -341,6 +396,8 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         updateTripParams,
         setGroupMode,
         setModality,
+        addMustVisitPlace,
+        removeMustVisitPlace,
         travelers,
         toggleTravelerTag,
         ocrChips,
@@ -351,6 +408,9 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         dayPlans,
         selectedStopId,
         setSelectedStopId,
+        toggleStopApproval,
+        isMapVisibleInStudio,
+        setIsMapVisibleInStudio,
         chatMessages,
         addChatMessage,
         proposal,
@@ -371,6 +431,7 @@ export const TripProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setIsShareModalOpen,
         isAuthModalOpen,
         setIsAuthModalOpen,
+        shareViaEmail,
         toast,
         showToast,
       }}
